@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Prices from './Prices.js';
 
 const text = {
@@ -7,37 +8,45 @@ const text = {
   visionary: 'ProtonMail for families and small businesses',
 };
 
-const currency = 'EUR';
-
-const renderPlan = (plan) => {
-
+const defaults = {
+  currency: 'EUR',
+  period: '12'
 };
 
 const Plans = ({ items }) => {
 
-  const [plusPlan] = items[currency].filter(plan => { return plan.Name === 'plus' });
-  const [professionalPlan] = items[currency].filter(plan => { return plan.Name === 'professional' });
-  const [visionaryPlan] = items[currency].filter(plan => { return plan.Name === 'visionary' });
+  const [currency, setCurrency] = useState(defaults.currency);
+  const [period, setPeriod] = useState(defaults.period);
+
+  const [plusPlan] = items[currency].filter(item => { return item.Name === 'plus' });
+  const [professionalPlan] = items[currency].filter(item => { return item.Name === 'professional' });
+  const [visionaryPlan] = items[currency].filter(item => { return item.Name === 'visionary' });
 
   return <div className="plans">
+
     <h2>Plans &amp; Prices</h2>
 
-    <select>
+    <select defaultValue={period} onChange={e => setPeriod(e.target.value)}>
       <option>Monthly</option>
       <option selected>Annually</option>
       <option>2 years</option>
     </select>
-    <select>
+    <select defaultValue={currency} onChange={e => setCurrency(e.target.value)}>
       <option>CHF</option>
       <option selected>€ Euro</option>
       <option>$ USD</option>
     </select>
 
     <div className="grid">
-      {<Prices item={items.freePlan} text={text['free']}></Prices>}
-      {plusPlan && <Prices item={plusPlan} text={text[plusPlan.Name]}></Prices>}
-      {professionalPlan && <Prices item={professionalPlan} text={text[professionalPlan.Name]}></Prices>}
-      {visionaryPlan && <Prices item={visionaryPlan} text={text[visionaryPlan.Name]}></Prices>}
+
+      <Prices item={items.freePlan} currency={currency} period={period}></Prices>
+
+      { plusPlan && <Prices item={plusPlan} currency={currency} period={period}></Prices> }
+
+      { professionalPlan && <Prices item={professionalPlan} currency={currency} period={period}></Prices> }
+      
+      { visionaryPlan && <Prices item={visionaryPlan} item={professionalPlan} currency={currency} period={period}></Prices>}
+
     </div>
 
     <style jsx>{`
@@ -67,7 +76,7 @@ const Plans = ({ items }) => {
     </style>
 
   </div>
-  
+
 };
 
 export default Plans; 
