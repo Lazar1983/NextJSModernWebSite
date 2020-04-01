@@ -1,6 +1,44 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import Plans from '../components/Plans';
+import currencyPlans from '../fetch/currencyPlans';
 
-const Index = () => (
+const currency = {
+  EUR: 'EUR',
+  CHF: 'CHF',
+  USD: 'USD'
+};
+
+const freePlan = {
+  Name: 'free',
+  MaxMembers: 1,
+  MaxSpace: 500000000,
+  MaxAddresses: 1,
+  MaxDomains: 0,
+  MaxVPN: 0,
+  Pricing: {
+    1: 0,
+    12: 0,
+    24: 0,
+  },
+  Amount: 0
+
+};
+
+export async function getStaticProps() {
+  return {
+    props: {
+      plans: {
+        [currency.EUR]: await currencyPlans(currency.EUR),
+        [currency.CHF]: await currencyPlans(currency.CHF),
+        [currency.USD]: await currencyPlans(currency.USD),
+        freePlan
+      }
+    }
+  }
+};
+
+const Index = ({ plans }) => (
+
   <div className="container">
     <Head>
       <title>Proton FE Test: Modern Website</title>
@@ -20,7 +58,8 @@ const Index = () => (
       </p>
 
       <h2 className="description">Plans &amp; Prices</h2>
-
+    
+    <Plans items={plans} />
   
     </main>
 

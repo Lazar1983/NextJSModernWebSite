@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 
-export async function Plans(currency) {
+export default async function currencyPlans(currency) {
     const myHeaders = new Headers();
 
     myHeaders.append('Content-Type', 'application/json;charset=utf-8');
@@ -19,4 +19,5 @@ export async function Plans(currency) {
     const result = await response.json();
     
     return result.Plans;
+
 }
