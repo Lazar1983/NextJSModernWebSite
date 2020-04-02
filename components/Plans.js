@@ -1,12 +1,5 @@
 import { useState } from 'react';
-import Prices from './Prices.js';
-
-const text = {
-  free: 'The basics for private and secure communications',
-  plus: 'Full-featured mailbox with advanced protection',
-  professional: 'ProtonMail for professionals and businesses',
-  visionary: 'ProtonMail for families and small businesses',
-};
+import Prices from './Prices';
 
 const defaults = {
   currency: 'EUR',
@@ -44,7 +37,7 @@ const Plans = ({ items }) => {
       { plusPlan && <Prices item={plusPlan} currency={currency} period={period}></Prices> }
 
       { professionalPlan && <Prices item={professionalPlan} currency={currency} period={period}></Prices> }
-      
+
       { visionaryPlan && <Prices item={visionaryPlan} item={professionalPlan} currency={currency} period={period}></Prices>}
 
     </div>
